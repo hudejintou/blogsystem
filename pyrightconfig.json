@@ -1,0 +1,9 @@
+{
+  "venvPath": ".",
+  "venv": ".venv",
+  "extraPaths": [".venv/lib/python3.14/site-packages"],
+  "pythonVersion": "3.14",
+  "include": ["blog", "blogsystem", "config", "comment", "manage.py"],
+  "exclude": [".venv", "**/migrations"],
+  "typeCheckingMode": "basic"
+}
