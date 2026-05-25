@@ -14,10 +14,10 @@ config/              # 配置 APP — 友情链接等
 
 ## 环境配置
 
-- **Python**: 3.13（Mac）/ 3.x（Windows），各机器独立管理 `.venv`
+- **Python**: 3.14（Windows）/ 3.13（Mac），各机器独立管理 `.venv`
 - **配置切换**: 通过环境变量 `BLOGSYSTEM_PROFILE` 控制加载哪个 settings 文件，默认 `develop`
 - **数据库**: SQLite（`db.sqlite3`），已在 `.gitignore` 忽略，每台机器独立
-- **依赖安装**: `pip install -r requirements.txt`（注意：目前 requirements.txt 是全量 freeze 的，跨平台可能有版本不兼容的包，核心依赖只需 Django 5.1.2、djangorestframework 3.15.2、django-cors-headers 4.4.0 等）
+- **核心依赖**: 只需 Django 5.1.2。requirements.txt 是全量 freeze 的，跨平台可能有不兼容的包（如 djangorestframework、django-cors-headers 等未使用但被 freeze 的包），装不上就单独 `pip install django`
 
 ## 常用命令
 
