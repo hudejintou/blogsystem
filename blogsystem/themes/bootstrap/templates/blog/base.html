@@ -24,14 +24,14 @@
                     </li>
                     {% endfor %}
                 </ul>
-                <form class="form-inline my-2 my-lg-0" action="/search/" method="GET">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="form-inline" action="/search/" method="GET">
+                    <input class="form-control" type="search" name="keyword" placeholder="Search" aria-label="Search" value="{{ keyword }}">
                     <button class="btn btn-outline-success" type="submit">搜索</button>
                 </form>
             </div>
         </nav>
         <div class="jumbotron">
-            <h1 class="display-4">Typeidea</h1>
+            <h1 class="display-4">blogsystem</h1>
             <p class="lead">基于Django的多人博客系统</p>
         </div>
     </div>
@@ -69,7 +69,7 @@
             </nav>
         </div>
         <div class="container power">
-            <span class="text-muted">Power by Typeidea@the5fire</span>
+            <span class="text-muted">Power by blogsystem@hudejintou</span>
         </div>
         {% endblock %}
     </footer>

@@ -58,7 +58,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "blogsystem.urls"
 
-THEME = 'default'            # 主题名称，切换主题只需改这里
+THEME = 'bootstrap'            # 主题名称，切换主题只需改这里
 
 TEMPLATES = [
     {

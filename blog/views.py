@@ -1,8 +1,12 @@
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView
 
 from config.models import SideBar
 from .models import Post, Tag, Category
+
+from comment.forms import CommentForm
+from comment.models import Comment
 
 
 class CommonViewMixin:
@@ -65,3 +69,30 @@ class PostDetailView(CommonViewMixin, DetailView):
     template_name = 'blog/detail.html'
     context_object_name = 'post'         # 模板中通过 {{ post }} 访问文章对象
     pk_url_kwarg = 'post_id'            # 告诉 DetailView 从 URL 的 post_id 参数提取主键
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'comment_form': CommentForm(),
+            'comment_list': Comment.get_by_target(self.request.path),
+        })
+
+class SearchView(IndexView):
+    def get_context_data(self):
+        context = super().get_context_data()
+        context.update({
+            'keyword': self.request.GET.get('keyword', ''),
+        })
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        keyword = self.request.GET.get('keyword')
+        if not keyword:
+            return queryset
+        return queryset.filter(Q(title__icontains=keyword) | Q(desc__icontains=keyword))
+class AuthorView(IndexView):
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        author_id = self.kwargs.get('owner_id')
+        return queryset.filter(owner_id=author_id)
