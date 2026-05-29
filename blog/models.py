@@ -1,3 +1,4 @@
+import mistune
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -84,7 +85,7 @@ class Post(models.Model):
     create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
     pv = models.PositiveIntegerField(default=1)   # 页面浏览量
     uv = models.PositiveIntegerField(default=1)   # 独立访客数
-
+    content_html = models.TextField(verbose_name="正文html代码", blank=True, editable=False)
     class Meta:
         verbose_name = verbose_name_plural = "文章"
         ordering = ['-id']   # 按 id 降序排列，id 越大越靠前
@@ -130,3 +131,6 @@ class Post(models.Model):
     def hot_posts(cls):
         """按浏览量降序获取热门文章"""
         return cls.objects.filter(status=cls.STATUS_NORMAL).order_by('-pv')
+    def save(self, *args, **kwargs):
+        self.content_html = mistune.markdown(self.content)
+        super().save(*args, **kwargs)
