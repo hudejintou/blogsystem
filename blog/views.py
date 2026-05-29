@@ -70,12 +70,12 @@ class PostDetailView(CommonViewMixin, DetailView):
     context_object_name = 'post'         # 模板中通过 {{ post }} 访问文章对象
     pk_url_kwarg = 'post_id'            # 告诉 DetailView 从 URL 的 post_id 参数提取主键
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'comment_form': CommentForm(),
-            'comment_list': Comment.get_by_target(self.request.path),
-        })
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context.update({
+    #         'comment_form': CommentForm(),
+    #         'comment_list': Comment.get_by_target(self.request.path),
+    #     })
 
 class SearchView(IndexView):
     def get_context_data(self):

@@ -1,5 +1,9 @@
 <ul>
 {% for comment in comments %}
-    <li>{{ comment.content }}</li>
+    <li>
+        {% autoescape off %}
+        {{ comment.content }}
+        {% endautoescape %}
+    </li>
 {% endfor %}
 </ul>
