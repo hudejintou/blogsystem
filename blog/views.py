@@ -1,6 +1,8 @@
-from django.db.models import Q
+from datetime import date
+from django.db.models import Q, F
 from django.shortcuts import get_object_or_404
 from django.views.generic import DetailView, ListView
+from django.core.cache import cache
 
 from config.models import SideBar
 from .models import Post, Tag, Category
@@ -70,12 +72,31 @@ class PostDetailView(CommonViewMixin, DetailView):
     context_object_name = 'post'         # 模板中通过 {{ post }} 访问文章对象
     pk_url_kwarg = 'post_id'            # 告诉 DetailView 从 URL 的 post_id 参数提取主键
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context.update({
-    #         'comment_form': CommentForm(),
-    #         'comment_list': Comment.get_by_target(self.request.path),
-    #     })
+    def get(self, request, *args, **kwargs):
+        response = super().get(request, *args, **kwargs)
+        self.handle_visited()
+        return response
+
+    def handle_visited(self):
+        increase_pv = False
+        increase_uv = False
+        uid = self.request.uid
+        pv_key = 'pv:%s:%s' % (uid, self.request.path)
+        uv_key = 'uv:%s:%s:%s' % (uid, str(date.today()), self.request.path)
+        if not cache.get(pv_key):
+            increase_pv = True
+            cache.set(pv_key, 1, 1*60)
+
+        if not cache.get(uv_key):
+            increase_uv = True
+            cache.set(uv_key, 1, 24*60*60)
+
+        if increase_pv and increase_uv:
+            Post.objects.filter(pk=self.object.id).update(pv=F('pv') + 1, uv= F('uv') + 1)
+        elif increase_pv:
+            Post.objects.filter(pk=self.object.id).update(pv=F('pv') + 1)
+        elif increase_uv:
+            Post.objects.filter(pk=self.object.id).update(uv=F('uv') + 1)
 
 class SearchView(IndexView):
     def get_context_data(self):
