@@ -5,7 +5,7 @@ from comment.models import Comment
 
 register = template.Library()
 
-@register.inclusion_tag('comemtn/block.html')
+@register.inclusion_tag('comment/block.html')
 def comment_block(target):
     return{
         'target': target,
