@@ -10,7 +10,9 @@
         <span>作者：<a href="{% url 'author' post.owner.id %}">{{ post.owner.username }}</a></span>
     </div>
     <hr/>
-    <p>{{ post.content }}</p>
+    {% autoescape off %}
+    {{ post.content_html }}
+    {% endautoescape %}
     {% endif %}
 
     <hr/>
