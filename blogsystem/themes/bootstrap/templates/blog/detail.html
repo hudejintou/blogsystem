@@ -14,5 +14,6 @@
     {% endif %}
 
     <hr/>
-
+    {% load comment_block %}
+    {% comment_block request.path %}
 {% endblock %}

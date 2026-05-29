@@ -22,8 +22,10 @@
                 <a href="{{ target }}">返回</a>
             {% else %}
                 <ul class="errorlist">
-                {% for field, message in form.error.items %}
-                    <li>{{ message }}</li>
+                {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
                 {% endfor %}
                 </ul>
                 <a href="javascript:window.history.back()">返回</a>
